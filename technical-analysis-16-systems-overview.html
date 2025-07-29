@@ -1,0 +1,606 @@
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Сравнительный анализ систем Железнодорожной Автоматики и Телемеханики</title>
+    <style>
+        :root {
+            --primary-color: #1a3c6c;
+            --secondary-color: #2c8dc9;
+            --accent-color: #e63946;
+            --light-color: #f1faee;
+            --dark-color: #1d3557;
+            --success-color: #2a9d8f;
+            --warning-color: #e9c46a;
+            --danger-color: #e76f51;
+            --text-color: #2b2d42;
+            --text-light: #8d99ae;
+            --header-bg: #2c3e50;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.7;
+            color: var(--text-color);
+            background-color: #fafafa;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--header-bg), #34495e);
+            color: white;
+            padding: 2.5rem 0;
+            text-align: center;
+            margin-bottom: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+            position: relative;
+            overflow: hidden;
+        }
+
+        header:before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><polygon points="0,0 100,100 0,100" fill="rgba(255,255,255,0.05)"/></svg>');
+            background-size: 100% 100%;
+        }
+
+        h1, h2, h3 {
+            margin-bottom: 1.2rem;
+            color: var(--primary-color);
+            font-weight: 600;
+            position: relative;
+            z-index: 1;
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 0.7rem;
+            letter-spacing: -0.5px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .subtitle {
+            font-size: 1.3rem;
+            opacity: 0.9;
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        h2 {
+            font-size: 2.2rem;
+            border-bottom: 4px solid var(--secondary-color);
+            padding-bottom: 0.7rem;
+            margin-top: 2.5rem;
+            position: relative;
+        }
+
+        h2:after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 80px;
+            height: 4px;
+            background-color: var(--accent-color);
+        }
+
+        h3 {
+            font-size: 1.7rem;
+            color: var(--dark-color);
+            margin-top: 1.8rem;
+        }
+
+        p {
+            margin-bottom: 1.2rem;
+            text-align: justify;
+            font-size: 1.05rem;
+            line-height: 1.8;
+        }
+
+        .intro {
+            background-color: white;
+            padding: 2.2rem;
+            border-radius: 12px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+            margin-bottom: 2.5rem;
+            border-left: 5px solid var(--secondary-color);
+        }
+
+        .section {
+            background-color: white;
+            margin-bottom: 2.5rem;
+            padding: 2.2rem;
+            border-radius: 12px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2.5rem 0;
+            background-color: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+        }
+
+        .comparison-table th, .comparison-table td {
+            padding: 1.2rem;
+            text-align: left;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .comparison-table th {
+            background-color: var(--primary-color);
+            color: white;
+            font-weight: 600;
+        }
+
+        .comparison-table tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+
+        .comparison-table tr:hover {
+            background-color: #e3f2fd;
+        }
+
+        .chart-container {
+            background-color: white;
+            padding: 2.2rem;
+            border-radius: 12px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+            margin: 2.5rem 0;
+            text-align: center;
+        }
+
+        .chart-placeholder {
+            width: 100%;
+            height: 320px;
+            background: linear-gradient(45deg, #f8f9fa, #e9ecef);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 1.2rem 0;
+            font-weight: 600;
+            color: var(--text-light);
+            border: 2px dashed #dee2e6;
+            font-size: 1.1rem;
+        }
+
+        .key-points {
+            background-color: #e8f4fc;
+            padding: 1.7rem;
+            border-radius: 12px;
+            margin: 1.3rem 0;
+            border-left: 5px solid var(--secondary-color);
+        }
+
+        .key-points h4 {
+            margin-top: 0;
+            color: var(--primary-color);
+            font-size: 1.3rem;
+        }
+
+        .key-points ul {
+            padding-left: 1.7rem;
+        }
+
+        .key-points li {
+            margin-bottom: 0.6rem;
+            line-height: 1.6;
+        }
+
+        .highlight {
+            background-color: #fff9db;
+            padding: 0.3rem 0.5rem;
+            border-radius: 6px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .market-position {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .market-card {
+            flex: 1;
+            min-width: 280px;
+            background: linear-gradient(135deg, var(--primary-color), #2a5a8c);
+            color: white;
+            padding: 1.8rem;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .market-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .market-card h4 {
+            color: white;
+            margin-top: 0;
+            font-size: 1.4rem;
+        }
+
+        .market-card p {
+            color: #e9ecef;
+            margin-bottom: 0.8rem;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2.5rem 0;
+            color: var(--text-light);
+            font-size: 1rem;
+            border-top: 1px solid #e9ecef;
+            margin-top: 2rem;
+        }
+
+        .features-list {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .features-list h4 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .features-list ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .features-list li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #e9ecef;
+            position: relative;
+            padding-left: 1.5rem;
+        }
+
+        .features-list li:before {
+            content: "✓";
+            color: var(--success-color);
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+
+        .article-title {
+            font-size: 3rem !important;
+            color: white !important;
+            text-align: center;
+            margin-bottom: 1rem;
+            font-weight: 700;
+            letter-spacing: -1px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+
+        .article-subtitle {
+            font-size: 1.4rem !important;
+            color: rgba(255,255,255,0.9) !important;
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+            font-weight: 300;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                width: 95%;
+                padding: 10px;
+            }
+            
+            .article-title {
+                font-size: 2.2rem !important;
+            }
+            
+            .article-subtitle {
+                font-size: 1.1rem !important;
+            }
+            
+            h2 {
+                font-size: 1.7rem;
+            }
+            
+            .market-card {
+                min-width: 100%;
+            }
+            
+            .section, .intro {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1 class="article-title">Сравнительный анализ систем Железнодорожной Автоматики и Телемеханики</h1>
+            <p class="article-subtitle">Обзор 16 ключевых решений отечественных и зарубежных производителей</p>
+        </header>
+
+        <section class="intro">
+            <h2>Введение</h2>
+            <p>Современные системы железнодорожной автоматики и телемеханики играют ключевую роль в обеспечении безопасности движения поездов, повышении пропускной способности железных дорог и эффективности эксплуатации железнодорожного транспорта. В данной статье представлен сравнительный анализ 16 ключевых решений, включая как отечественные разработки, так и зарубежные системы, применяемые в различных условиях эксплуатации.</p>
+            
+            <div class="key-points">
+                <h4>Ключевые аспекты анализа:</h4>
+                <ul>
+                    <li>Архитектурные особенности систем</li>
+                    <li>Уровень функциональной безопасности (SIL)</li>
+                    <li>Возможности диагностики и мониторинга</li>
+                    <li>Рыночное позиционирование и стратегии производителей</li>
+                    <li>Масштабы эксплуатации и пользовательский опыт</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Глобальные лидеры рынка</h2>
+            
+            <h3>Alstom (Франция) - Urbalis</h3>
+            <p>Флагманская CBTC-система для метрополитенов с двумя версиями: классическая Urbalis 400 и революционная Urbalis Fluence с поездоцентричной архитектурой.</p>
+            
+            <div class="features-list">
+                <h4>Сильные стороны:</h4>
+                <ul>
+                    <li>Train-centric CBTC (Urbalis Fluence) - интеграция функций на борту</li>
+                    <li>Цифровая архитектура (SelTrac G8) - минимизация путевого оборудования</li>
+                    <li>Платформенный подход (Платформа 2.0) - универсальность применения</li>
+                    <li>190 линий метро в 32 странах</li>
+                </ul>
+            </div>
+
+            <h3>Thales (Франция) - SelTrac</h3>
+            <p>Одна из самых распространённых систем CBTC в мире с десятилетиями опыта эксплуатации. 8-е поколение SelTrac G8 имеет новую цифровую архитектуру с гибкими опциями.</p>
+            
+            <div class="features-list">
+                <h4>Сильные стороны:</h4>
+                <ul>
+                    <li>Возможность обновления существующих систем SelTrac</li>
+                    <li>Минимизация эксплуатационных расходов</li>
+                    <li>Готовность к автономному управлению</li>
+                    <li>Защита инвестиций</li>
+                </ul>
+            </div>
+
+            <h3>Hitachi Rail (Япония/Италия) - MicroLok/SelTrac</h3>
+            <p>Многопроцессорная архитектура для vital и non-vital приложений с модульной конструкцией и высокой надёжностью.</p>
+            
+            <div class="features-list">
+                <h4>Сильные стороны:</h4>
+                <ul>
+                    <li>Модульная архитектура с возможностью масштабирования</li>
+                    <li>Современные промышленные компоненты с высокой надёжностью</li>
+                    <li>Соответствие SIL-4 для критически важных функций</li>
+                    <li>Современные средства связи, мониторинга и анализа данных</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Региональные лидеры</h2>
+            
+            <div class="market-position">
+                <div class="market-card">
+                    <h4>Российские системы</h4>
+                    <p>Технологическая независимость и импортозамещение</p>
+                    <p><span class="highlight">Пример: Система «Движение» (НИИТМ)</span></p>
+                </div>
+                
+                <div class="market-card">
+                    <h4>Китайские системы</h4>
+                    <p>Господдержка и инициатива "Один пояс, один путь"</p>
+                    <p><span class="highlight">Пример: iLOCK/CBTC (CRSC)</span></p>
+                </div>
+                
+                <div class="market-card">
+                    <h4>Японские системы</h4>
+                    <p>Национальное лидерство и специализация</p>
+                    <p><span class="highlight">Пример: Kyosan Electric</span></p>
+                </div>
+            </div>
+            
+            <h3>Высокая надежность</h3>
+            <ul>
+                <li>Соответствие SIL-4 для критически важных функций</li>
+                <li>Современные средства связи, мониторинга и анализа данных</li>
+            </ul>
+            
+            <h3>Система «Движение» (НИИТМ, Россия)</h3>
+            <p>Универсальная платформа для цифровизации промышленности с акцентом на импортозамещение. Находится в стадии активного развертывания.</p>
+            
+            <div class="features-list">
+                <h4>Сильные стороны:</h4>
+                <ul>
+                    <li>Полная локализация и технологическая независимость</li>
+                    <li>Модульность и универсальность</li>
+                    <li>Высокий уровень безопасности SIL4</li>
+                    <li>Модульная конструкция, новое поколение централизации может быть быстро и легко адаптировано к местным условиям и эксплуатационным требованиям</li>
+                </ul>
+            </div>
+
+            <h3>iLOCK/CBTC (CRSC, Китай)</h3>
+            <p>Китайские системы управления поездами с адаптацией для местных условий и конкурентоспособной ценой.</p>
+            
+            <div class="features-list">
+                <h4>Сильные стороны:</h4>
+                <ul>
+                    <li>Адаптация для индийских условий</li>
+                    <li>Соответствие международным стандартам</li>
+                    <li>Конкурентоспособная цена</li>
+                    <li>Множественные внедрения на железных дорогах Индии</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Сравнительная таблица ключевых характеристик</h2>
+            
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Система</th>
+                        <th>Производитель</th>
+                        <th>Тип системы</th>
+                        <th>Уровень SIL</th>
+                        <th>Архитектура</th>
+                        <th>Основные рынки</th>
+                        <th>Масштаб эксплуатации</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Urbalis</td>
+                        <td>Alstom (Франция)</td>
+                        <td>CBTC</td>
+                        <td>SIL-4</td>
+                        <td>Train-centric / Распределенная</td>
+                        <td>Глобальный</td>
+                        <td>190 линий метро в 32 странах</td>
+                    </tr>
+                    <tr>
+                        <td>SelTrac G8</td>
+                        <td>Thales (Франция)</td>
+                        <td>CBTC</td>
+                        <td>SIL-4</td>
+                        <td>Цифровая архитектура</td>
+                        <td>Глобальный</td>
+                        <td>Десятилетия опыта</td>
+                    </tr>
+                    <tr>
+                        <td>MicroLok II</td>
+                        <td>Hitachi Rail</td>
+                        <td>CBTC/CBI</td>
+                        <td>SIL-4</td>
+                        <td>Многопроцессорная</td>
+                        <td>Северная Америка, Азия</td>
+                        <td>Множественные внедрения</td>
+                    </tr>
+                    <tr>
+                        <td>«Движение»</td>
+                        <td>НИИТМ (Россия)</td>
+                        <td>CBTC-подобная</td>
+                        <td>SIL-4</td>
+                        <td>Модульная</td>
+                        <td>Российские ЖД</td>
+                        <td>Активное развертывание</td>
+                    </tr>
+                    <tr>
+                        <td>iLOCK/CBTC</td>
+                        <td>CRSC (Китай)</td>
+                        <td>CBTC</td>
+                        <td>Соответствует стандартам</td>
+                        <td>Китайская архитектура</td>
+                        <td>Китай, Индия</td>
+                        <td>Множественные внедрения</td>
+                    </tr>
+                    <tr>
+                        <td>Smartlock 400</td>
+                        <td>Alstom (Франция)</td>
+                        <td>CBI</td>
+                        <td>2oo3 архитектура</td>
+                        <td>Распределенная модульная</td>
+                        <td>Великобритания, глобальный</td>
+                        <td>Широкое применение</td>
+                    </tr>
+                    <tr>
+                        <td>LockTrac</td>
+                        <td>Thales (Франция)</td>
+                        <td>CBI</td>
+                        <td>SIL-4</td>
+                        <td>Распределенная</td>
+                        <td>Глобальный</td>
+                        <td>Одна из самых распространенных</td>
+                    </tr>
+                    <tr>
+                        <td>QUASAR S4e</td>
+                        <td>CAF Signalling (Испания)</td>
+                        <td>CBI</td>
+                        <td>EN-50126</td>
+                        <td>Электронная централизация</td>
+                        <td>Европа</td>
+                        <td>Региональные проекты</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="chart-container">
+            <h2>Рыночное позиционирование производителей</h2>
+            <div class="chart-placeholder">
+                ДИАГРАММА: Доля рынка по регионам и производителям
+                <br>
+                (Визуализация будет добавлена в полноценной системе)
+            </div>
+        </section>
+
+        <section class="chart-container">
+            <h2>Сравнение уровней безопасности (SIL)</h2>
+            <div class="chart-placeholder">
+                ГРАФИК: Уровни SIL различных систем
+                <br>
+                (Визуализация будет добавлена в полноценной системе)
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Конкурентные стратегии</h2>
+            
+            <h3>Глобальные игроки</h3>
+            <p>Крупные международные компании делают ставку на технологическое лидерство, защиту инвестиций и возможность модернизации существующих систем. Они предлагают комплексные решения с высокой степенью интеграции и развитыми сервисными возможностями.</p>
+            
+            <h3>Региональные производители</h3>
+            <p>Региональные игроки концентрируются на адаптации решений под местные условия, обеспечении технологической независимости и предложении конкурентоспособной цены. Они часто имеют преимущества в локализации и поддержке.</p>
+            
+            <div class="features-list">
+                <h4>Стратегические подходы:</h4>
+                <ul>
+                    <li><span class="highlight">Alstom:</span> Платформенный подход и поездоцентричная архитектура</li>
+                    <li><span class="highlight">Thales:</span> Защита инвестиций и плавная модернизация</li>
+                    <li><span class="highlight">НИИТМ:</span> Технологическая независимость и импортозамещение</li>
+                    <li><span class="highlight">CRSC:</span> Адаптация и конкурентоспособная цена</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Заключение</h2>
+            <p>Анализ 16 ключевых систем железнодорожной автоматики и телемеханики показывает значительное разнообразие подходов к решению задач безопасности движения и управления поездами. Глобальные лидеры демонстрируют высокий уровень технологической зрелости и широкое распространение, в то время как региональные производители предлагают адаптированные решения с акцентом на локальные потребности и независимость.</p>
+            
+            <p>Для отечественных разработчиков ключевыми направлениями развития должны стать не только технические аспекты, но и создание экосистемы, обеспечивающей долгосрочную поддержку, совместимость с международными стандартами и привлекательную стоимость владения.</p>
+        </section>
+
+        <footer>
+            <p>© 2025 База знаний Битрикс24 | Сравнительный анализ систем Железнодорожной Автоматики и Телемеханики</p>
+            <p>Информация основана на техническом анализе и рыночных данных по состоянию на 2025 год</p>
+        </footer>
+    </div>
+</body>
